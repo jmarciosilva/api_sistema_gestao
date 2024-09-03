@@ -21,6 +21,10 @@
   
   # Exponha a porta 8080
   EXPOSE 8080
+
+  # Adicione isso antes do CMD no Dockerfile
+  RUN a2enmod rewrite
+
   
   # Inicie o servidor Apache
   CMD ["apache2-foreground"]

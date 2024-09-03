@@ -4,8 +4,8 @@ services:
   # Serviço PHP
   php:
     build:
-      context: .  
-      dockerfile: Dockerfile  
+      context: .  # Diretório onde está o Dockerfile
+      dockerfile: Dockerfile  # Nome do Dockerfile
     container_name: php-container 
     ports:
       - "8080:80" 
