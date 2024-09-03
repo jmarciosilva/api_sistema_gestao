@@ -107,7 +107,7 @@ docker ps
 Agora precisa entrar dentro do container que está instalado o PHP e o Apache
 
 ```
-docker exec -it php-container_8_2
+docker exec -it php-container_8_2 /bin/bash
 ```
 Dentro do container volte uma pasta atrás:
 
