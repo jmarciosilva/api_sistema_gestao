@@ -155,13 +155,14 @@ exit
 Abra o visual studio code ou a sua ide preferida para configurar o arquivo .env do projeto
 
 Seu Arquivo .env deve estar com a configuracao de mysql
-
+```
 DB_CONNECTION=mysql
 DB_HOST=db
 DB_PORT=3306
 DB_DATABASE=gestao
 DB_USERNAME=root
 DB_PASSWORD=marcio1015
+```
 
 Feito essas configurações no arquivo .env volte ao prompt de comando
 
