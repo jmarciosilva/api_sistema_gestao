@@ -101,4 +101,30 @@ class BillController extends Controller
         }
     }
 
+    public function destroy(Bill $bill): JsonResponse
+    {
+       try{
+        // excluir o registro
+        $bill->delete();
+
+        // Retornando os dados em formato json com status 201
+        return response()->json([
+            'status' => true,
+            'bill' => $bill,
+            'message' => 'Conta apagada com sucesso.'
+        ], 200);
+
+       }catch(Exception $e){
+        // Operação não foi concluída com êxito
+        DB::rollBack();
+
+        // Retornando os dados em formato jso com status 400
+        return response()->json([
+            'status' => true,
+            'message' => 'Conta não apagada!'
+        ], 400); 
+       }
+
+    }
+
 }

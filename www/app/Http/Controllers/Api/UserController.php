@@ -20,7 +20,6 @@ class UserController extends Controller
             'status' => true,
             'bills' => $users,
         ], 200);
-
     }
 
     public function show(User $user): JsonResponse
@@ -36,11 +35,11 @@ class UserController extends Controller
         // Iniciando a Transação
         DB::beginTransaction();
 
-        try{
+        try {
             // Cadastrando no banco de dados
             $user = User::create([
                 "name" => $request->name,
-			    "email" => $request->email,
+                "email" => $request->email,
                 "password" => $request->password
             ]);
 
@@ -53,8 +52,7 @@ class UserController extends Controller
                 'bill' => $user,
                 'message' => 'Usuário cadastrado com sucesso.'
             ], 201);
-
-        } catch(Exception $e){
+        } catch (Exception $e) {
             // Operação não foi concluída com êxito
             DB::rollBack();
 
@@ -72,35 +70,56 @@ class UserController extends Controller
         DB::beginTransaction();
 
 
-        try{
+        try {
             // editar o registro no banco de dados
             $user->update([
                 'name' => $request->name,
-                "email"=>  $request->email,
-		        "password" => $request->password
+                "email" =>  $request->email,
+                "password" => $request->password
             ]);
 
-             // Operação com Sucesso
-             DB::commit();
+            // Operação com Sucesso
+            DB::commit();
+
+            // Retornando os dados em formato json com status 201
+            return response()->json([
+                'status' => true,
+                'bill' => $user,
+                'message' => 'Usuário editado com sucesso.'
+            ], 201);
+        } catch (Exception $e) {
+            // Operação não foi concluída com êxito
+            DB::rollBack();
+
+            // Retornando os dados em formato jso com status 400
+            return response()->json([
+                'status' => true,
+                'message' => 'Usuário não editado!'
+            ], 400);
+        }
+    }
+
+    public function destroy(User $user): JsonResponse
+    {
+        try {
+            $user->delete();
 
              // Retornando os dados em formato json com status 201
              return response()->json([
-                 'status' => true,
-                 'bill' => $user,
-                 'message' => 'Usuário editado com sucesso.'
-             ], 201);
+                'status' => true,
+                'bill' => $user,
+                'message' => 'Usuário apagado com sucesso.'
+            ], 200);
 
-        }catch(Exception $e){
-          // Operação não foi concluída com êxito
-          DB::rollBack();
+        } catch (Exception $e) {
+            // Operação não foi concluída com êxito
+            DB::rollBack();
 
-          // Retornando os dados em formato jso com status 400
-          return response()->json([
-              'status' => true,
-              'message' => 'Usuário não editado!'
-          ], 400);  
+            // Retornando os dados em formato jso com status 400
+            return response()->json([
+                'status' => true,
+                'message' => 'Usuário não apagado!'
+            ], 400);
         }
-
     }
 }
-
