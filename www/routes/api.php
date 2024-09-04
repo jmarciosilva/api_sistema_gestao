@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\Route;
 // User
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{user}', [UserController::class, 'show']);
-
+Route::post('users', [UserController::class, 'store']);
 
 
 
 // Bill
 Route::get('/bills', [BillController::class, 'index']);
 Route::get('/bills/{bill}', [BillController::class, 'show']);
+Route::post('bills', [BillController::class, 'store']);
