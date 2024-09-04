@@ -34,8 +34,8 @@ class BillController extends Controller
     {
         // Iniciar a Transação
         DB::beginTransaction();
-            
-        try{
+
+        try {
             // Cadastrando no banco de dados
             $bill = Bill::create([
                 "name" => $request->name,
@@ -52,8 +52,7 @@ class BillController extends Controller
                 'bill' => $bill,
                 'message' => 'Conta cadastrada com sucesso.'
             ], 201);
-
-        }catch(Exception $e){
+        } catch (Exception $e) {
             // Operação não foi concluída com êxito
             DB::rollBack();
 
@@ -71,60 +70,56 @@ class BillController extends Controller
         DB::beginTransaction();
 
 
-        try{
+        try {
             // editar o registro no banco de dados
             $bill->update([
                 'name' => $request->name,
-                "bill_value"=>  $request->bill_value,
-		        "due_date" => $request->due_date
+                "bill_value" =>  $request->bill_value,
+                "due_date" => $request->due_date
             ]);
 
-             // Operação com Sucesso
-             DB::commit();
+            // Operação com Sucesso
+            DB::commit();
 
-             // Retornando os dados em formato json com status 201
-             return response()->json([
-                 'status' => true,
-                 'bill' => $bill,
-                 'message' => 'Conta editada com sucesso.'
-             ], 201);
+            // Retornando os dados em formato json com status 201
+            return response()->json([
+                'status' => true,
+                'bill' => $bill,
+                'message' => 'Conta editada com sucesso.'
+            ], 201);
+        } catch (Exception $e) {
+            // Operação não foi concluída com êxito
+            DB::rollBack();
 
-        }catch(Exception $e){
-          // Operação não foi concluída com êxito
-          DB::rollBack();
-
-          // Retornando os dados em formato jso com status 400
-          return response()->json([
-              'status' => true,
-              'message' => 'Conta não editada!'
-          ], 400);  
+            // Retornando os dados em formato jso com status 400
+            return response()->json([
+                'status' => true,
+                'message' => 'Conta não editada!'
+            ], 400);
         }
     }
 
     public function destroy(Bill $bill): JsonResponse
     {
-       try{
-        // excluir o registro
-        $bill->delete();
+        try {
+            // excluir o registro
+            $bill->delete();
 
-        // Retornando os dados em formato json com status 201
-        return response()->json([
-            'status' => true,
-            'bill' => $bill,
-            'message' => 'Conta apagada com sucesso.'
-        ], 200);
+            // Retornando os dados em formato json com status 201
+            return response()->json([
+                'status' => true,
+                'bill' => $bill,
+                'message' => 'Conta apagada com sucesso.'
+            ], 200);
+        } catch (Exception $e) {
+            // Operação não foi concluída com êxito
+            DB::rollBack();
 
-       }catch(Exception $e){
-        // Operação não foi concluída com êxito
-        DB::rollBack();
-
-        // Retornando os dados em formato jso com status 400
-        return response()->json([
-            'status' => true,
-            'message' => 'Conta não apagada!'
-        ], 400); 
-       }
-
+            // Retornando os dados em formato jso com status 400
+            return response()->json([
+                'status' => true,
+                'message' => 'Conta não apagada!'
+            ], 400);
+        }
     }
-
 }

@@ -1,9 +1,14 @@
 <?php
 
 use App\Http\Controllers\Api\BillController;
+use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+// Rota Publica
+Route::post('/login', [LoginController::class, 'login']);
+
 
 // User
 Route::get('/users', [UserController::class, 'index']);
