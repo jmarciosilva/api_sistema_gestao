@@ -63,11 +63,42 @@ class BillController extends Controller
                 'message' => 'Conta não cadastrada!'
             ], 400);
         }
+    }
 
-        
+    public function update(BillRequest $request, Bill $bill): JsonResponse
+    {
+        // Iniciar a Transação
+        DB::beginTransaction();
 
-        
 
+        try{
+            // editar o registro no banco de dados
+            $bill->update([
+                'name' => $request->name,
+                "bill_value"=>  $request->bill_value,
+		        "due_date" => $request->due_date
+            ]);
+
+             // Operação com Sucesso
+             DB::commit();
+
+             // Retornando os dados em formato json com status 201
+             return response()->json([
+                 'status' => true,
+                 'bill' => $bill,
+                 'message' => 'Conta editada com sucesso.'
+             ], 201);
+
+        }catch(Exception $e){
+          // Operação não foi concluída com êxito
+          DB::rollBack();
+
+          // Retornando os dados em formato jso com status 400
+          return response()->json([
+              'status' => true,
+              'message' => 'Conta não editada!'
+          ], 400);  
+        }
     }
 
 }

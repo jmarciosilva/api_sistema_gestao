@@ -65,5 +65,42 @@ class UserController extends Controller
             ], 400);
         }
     }
+
+    public function update(UserRequest $request, User $user): JsonResponse
+    {
+        // Iniciar a Transação
+        DB::beginTransaction();
+
+
+        try{
+            // editar o registro no banco de dados
+            $user->update([
+                'name' => $request->name,
+                "email"=>  $request->email,
+		        "password" => $request->password
+            ]);
+
+             // Operação com Sucesso
+             DB::commit();
+
+             // Retornando os dados em formato json com status 201
+             return response()->json([
+                 'status' => true,
+                 'bill' => $user,
+                 'message' => 'Usuário editado com sucesso.'
+             ], 201);
+
+        }catch(Exception $e){
+          // Operação não foi concluída com êxito
+          DB::rollBack();
+
+          // Retornando os dados em formato jso com status 400
+          return response()->json([
+              'status' => true,
+              'message' => 'Usuário não editado!'
+          ], 400);  
+        }
+
+    }
 }
 
